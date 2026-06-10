@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Runtime data / secrets
+api/.env
+api/data/
+*.db
+*.db-wal
+*.db-shm
+*.log
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Build / temp
+dist/
+tmp/
+*.tar.gz
+*.tar.xz
+
+# Tooling
+.claude-flow/
+.claude/
+.swarm/
+.hive-mind/

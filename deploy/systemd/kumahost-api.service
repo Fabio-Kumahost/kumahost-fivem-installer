@@ -1,0 +1,32 @@
+[Unit]
+# KumaHost FiveM API — systemd unit. Installed by deploy/install-panel.sh.
+Description=KumaHost FiveM Webpanel API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kumahost
+Group=kumahost
+WorkingDirectory=/opt/kumahost/api
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/kumahost/api/.env
+ExecStart=/usr/bin/node src/server.js
+Restart=on-failure
+RestartSec=5
+
+# --- Hardening ---------------------------------------------------------------
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/kumahost/api/data
+# The API shells out to systemctl / the installer via sudo; keep caps minimal.
+
+# --- Logging -----------------------------------------------------------------
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kumahost-api
+
+[Install]
+WantedBy=multi-user.target

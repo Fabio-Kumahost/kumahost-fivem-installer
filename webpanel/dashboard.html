@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KumaHost FiveM Panel — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/kumahost.css" />
+</head>
+<body>
+  <div class="kh-container">
+    <!-- Top bar -->
+    <header class="kh-topbar">
+      <div class="kh-brand">
+        <div class="kh-brand__mark">K</div>
+        <div>
+          <div class="kh-brand__name">Kuma<span>Host</span></div>
+          <div class="kh-brand__tag">FiveM Panel</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span class="kh-muted" id="welcome"></span>
+        <button class="kh-btn kh-btn--ghost kh-btn--sm" id="logout-btn">Abmelden</button>
+      </div>
+    </header>
+
+    <!-- Server status card -->
+    <section class="kh-card" style="margin-bottom:20px;">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;">
+        <div>
+          <h2 id="server-name" class="kh-gradient-text" style="font-size:1.6rem;">FiveM Server</h2>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:8px;flex-wrap:wrap;">
+            <span class="kh-badge kh-badge--offline" id="status-badge"><span class="kh-dot"></span><span id="status-text">…</span></span>
+            <span class="kh-muted">Version: <strong id="version">…</strong></span>
+            <span class="kh-badge kh-hidden" id="update-badge" style="color:var(--kh-warn);border-color:rgba(230,180,80,.4);">Update verf&uuml;gbar</span>
+          </div>
+        </div>
+        <a class="kh-btn kh-btn--ghost kh-btn--sm" id="txadmin-link" href="#" target="_blank" rel="noopener">TxAdmin &ouml;ffnen ↗</a>
+      </div>
+
+      <div class="kh-btn-row" style="margin-top:20px;">
+        <button class="kh-btn kh-btn--sm" data-action="start">▶ Starten</button>
+        <button class="kh-btn kh-btn--sm" data-action="restart">⟳ Neustart</button>
+        <button class="kh-btn kh-btn--ghost kh-btn--sm" data-action="stop">■ Stoppen</button>
+        <button class="kh-btn kh-btn--ghost kh-btn--sm" id="update-btn">⬆ Update installieren</button>
+      </div>
+    </section>
+
+    <!-- Metrics -->
+    <div class="kh-grid kh-grid--metrics" style="margin-bottom:8px;">
+      <div class="kh-card kh-card--hover">
+        <div class="kh-metric__label">CPU</div>
+        <div class="kh-metric__value"><span id="cpu-val">0</span><small>%</small></div>
+        <div class="kh-bar"><div class="kh-bar__fill" id="cpu-bar" style="width:0%"></div></div>
+      </div>
+      <div class="kh-card kh-card--hover">
+        <div class="kh-metric__label">Arbeitsspeicher</div>
+        <div class="kh-metric__value"><span id="ram-val">0</span><small>%</small></div>
+        <div class="kh-bar"><div class="kh-bar__fill" id="ram-bar" style="width:0%"></div></div>
+        <div class="kh-muted" id="ram-detail" style="font-size:.8rem;margin-top:8px;"></div>
+      </div>
+      <div class="kh-card kh-card--hover">
+        <div class="kh-metric__label">Festplatte</div>
+        <div class="kh-metric__value"><span id="disk-val">0</span><small>%</small></div>
+        <div class="kh-bar"><div class="kh-bar__fill" id="disk-bar" style="width:0%"></div></div>
+        <div class="kh-muted" id="disk-detail" style="font-size:.8rem;margin-top:8px;"></div>
+      </div>
+      <div class="kh-card kh-card--hover">
+        <div class="kh-metric__label">Netzwerk</div>
+        <div class="kh-metric__value" style="font-size:1.25rem;margin-top:14px;">
+          <span id="net-down">0</span> <small>↓/s</small>
+        </div>
+        <div class="kh-muted" style="font-size:.85rem;"><span id="net-up">0</span> ↑/s · Uptime <span id="uptime">–</span></div>
+      </div>
+    </div>
+
+    <!-- Console -->
+    <div class="kh-section-title">
+      <h3>Konsole &amp; Logs</h3>
+      <button class="kh-btn kh-btn--ghost kh-btn--sm" id="refresh-logs">Aktualisieren</button>
+    </div>
+    <div class="kh-card"><pre class="kh-console" id="console">Logs werden geladen…</pre></div>
+
+    <!-- Backups -->
+    <div class="kh-section-title">
+      <h3>Backups</h3>
+      <button class="kh-btn kh-btn--sm" id="create-backup">＋ Backup erstellen</button>
+    </div>
+    <div class="kh-card"><div id="backups-list" class="kh-grid" style="gap:10px;">Keine Backups geladen.</div></div>
+
+    <footer class="kh-muted" style="text-align:center;padding:36px 0;font-size:.82rem;">
+      KumaHost FiveM Panel · Premium Hosting
+    </footer>
+  </div>
+
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

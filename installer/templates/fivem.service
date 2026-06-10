@@ -1,0 +1,34 @@
+[Unit]
+# KumaHost FiveM Installer — systemd unit for the FXServer / TxAdmin process.
+# Placeholders (__KH_*__) are substituted by installer/lib/service.sh.
+Description=KumaHost FiveM Server (FXServer + TxAdmin)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=__KH_FX_USER__
+Group=__KH_FX_USER__
+WorkingDirectory=__KH_FX_DATA_DIR__
+# run.sh launches TxAdmin, which in turn supervises the game server.
+ExecStart=__KH_FX_ARTIFACT_DIR__/run.sh +set serverProfile default +set txAdminPort __KH_TXADMIN_PORT__
+Restart=on-failure
+RestartSec=5
+# Give the server time to shut down cleanly on stop/restart.
+KillSignal=SIGINT
+TimeoutStopSec=30
+
+# --- Hardening ---------------------------------------------------------------
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=__KH_FX_BASE__
+
+# --- Logging -----------------------------------------------------------------
+StandardOutput=append:/var/log/fivem/server.log
+StandardError=append:/var/log/fivem/server.log
+SyslogIdentifier=fivem
+
+[Install]
+WantedBy=multi-user.target

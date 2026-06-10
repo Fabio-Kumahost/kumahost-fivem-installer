@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KumaHost FiveM Panel — Login</title>
+  <meta name="description" content="KumaHost FiveM Webpanel — Premium Hosting" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/kumahost.css" />
+</head>
+<body>
+  <div class="kh-login-wrap">
+    <div class="kh-card kh-login-card">
+      <div class="kh-brand">
+        <div class="kh-brand__mark">K</div>
+        <div>
+          <div class="kh-brand__name">Kuma<span>Host</span></div>
+          <div class="kh-brand__tag">FiveM Panel</div>
+        </div>
+      </div>
+
+      <h1>Willkommen zur&uuml;ck</h1>
+      <p class="kh-muted" style="margin-bottom:22px;">Melde dich an, um deinen FiveM-Server zu verwalten.</p>
+
+      <form id="login-form" autocomplete="on">
+        <div class="kh-field">
+          <label class="kh-label" for="username">Benutzername</label>
+          <input class="kh-input" id="username" name="username" type="text" required autocomplete="username" />
+        </div>
+        <div class="kh-field">
+          <label class="kh-label" for="password">Passwort</label>
+          <input class="kh-input" id="password" name="password" type="password" required autocomplete="current-password" />
+        </div>
+        <button class="kh-btn" id="login-btn" type="submit" style="width:100%;margin-top:6px;">
+          <span id="login-label">Anmelden</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
