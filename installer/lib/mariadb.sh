@@ -39,6 +39,10 @@ FLUSH PRIVILEGES;
 SQL
 
   # Persist credentials with strict permissions for later reference.
+  # MariaDB may be installed before install_fivem, so ensure the service
+  # user and base directory exist first (both calls are idempotent).
+  ensure_fivem_user
+  run mkdir -p "$KH_FX_BASE"
   umask 077
   cat >"$KH_DB_CRED_FILE" <<CRED
 # KumaHost — MariaDB Zugangsdaten (automatisch generiert)
