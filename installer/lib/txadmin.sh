@@ -58,15 +58,28 @@ CFG
   [[ -z "$license_key" ]] && log_warn "Kein License-Key gesetzt — vor dem Live-Betrieb in server.cfg eintragen (cfx.re/console)."
 }
 
-# show_txadmin_hint — print first-run TxAdmin access details.
+# show_txadmin_hint — print first-run TxAdmin access details and the setup PIN.
 show_txadmin_hint() {
-  local ip
+  local ip log="/var/log/fivem/server.log" pin elapsed=0
   ip="$(curl -fsSL --max-time 5 https://api.ipify.org 2>/dev/null || echo 'SERVER-IP')"
   printf '\n%s%s── TxAdmin Setup ────────────────────────────────%s\n' \
     "$KH_ACCENT" "$KH_BOLD" "$KH_RESET"
   log_detail "Web-Oberfläche:  http://${ip}:${KH_TXADMIN_PORT}"
-  log_detail "Beim ersten Start zeigt das Server-Log eine PIN für die Einrichtung an:"
-  log_detail "  journalctl -u ${KH_SERVICE_NAME} -f   (oder tail -f /var/log/fivem/server.log)"
+
+  # The service writes FXServer/TxAdmin output to the log file, NOT the journal
+  # (see fivem.service: StandardOutput=append:/var/log/fivem/server.log), so the
+  # first-run PIN never appears in `journalctl`. Read it straight from the log.
+  while (( elapsed < 20 )); do
+    pin="$(grep -aiE 'pin' "$log" 2>/dev/null | grep -aoE '[0-9]{4,8}' | tail -1)"
+    [[ -n "$pin" ]] && break
+    sleep 2; elapsed=$(( elapsed + 2 ))
+  done
+  if [[ -n "$pin" ]]; then
+    log_ok "Einrichtungs-PIN: ${pin}  (im Web-Panel eingeben)"
+  else
+    log_detail "PIN noch nicht im Log — beim ersten Start anzeigen mit:"
+    log_detail "  tail -f /var/log/fivem/server.log    (Zeile mit „PIN“)"
+  fi
   printf '%s─────────────────────────────────────────────────%s\n\n' "$KH_ACCENT" "$KH_RESET"
 }
 

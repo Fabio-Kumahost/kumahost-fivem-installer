@@ -59,3 +59,21 @@ CRED
   log_ok "MariaDB eingerichtet — Zugangsdaten: ${KH_DB_CRED_FILE}"
   log_detail "Connection-String dort hinterlegt (z. B. für oxmysql in server.cfg)."
 }
+
+# show_db_summary — print the stored MariaDB access details at the end of an
+# install (e.g. for the phpMyAdmin login). Reads the credentials file written
+# by install_mariadb; no-op if it is missing.
+show_db_summary() {
+  [[ -r "$KH_DB_CRED_FILE" ]] || return 0
+  local DB_HOST DB_NAME DB_USER DB_PASSWORD CONNECTION_STRING
+  # shellcheck disable=SC1090
+  . "$KH_DB_CRED_FILE"
+  printf '\n%s%s── Datenbank-Zugang ─────────────────────────────%s\n' \
+    "$KH_ACCENT" "$KH_BOLD" "$KH_RESET"
+  log_detail "Host:        ${DB_HOST}"
+  log_detail "Datenbank:   ${DB_NAME}"
+  log_detail "Benutzer:    ${DB_USER}"
+  log_detail "Passwort:    ${DB_PASSWORD}"
+  log_detail "Gespeichert: ${KH_DB_CRED_FILE}"
+  printf '%s─────────────────────────────────────────────────%s\n\n' "$KH_ACCENT" "$KH_RESET"
+}

@@ -106,16 +106,21 @@ install_fivem() {
   ensure_fivem_user
   run mkdir -p "$KH_FX_ARTIFACT_DIR" "$KH_FX_DATA_DIR"
 
+  # Explicit cleanup instead of a RETURN trap: a RETURN trap set here leaks
+  # past this function and re-fires on later returns (e.g. do_install), where
+  # $tmp is unbound under `set -u`. die() exits the process, so it would never
+  # have run on error anyway — clean up by hand on each exit path.
   tmp="$(mktemp -d)"
-  trap 'rm -rf "$tmp"' RETURN
   log_step "Lade Artefakt herunter"
   if ! curl -fL --retry 3 --retry-delay 2 -o "$tmp/fx.tar.xz" "$url" >>"$KH_LOG_FILE" 2>&1; then
+    rm -rf "$tmp"
     die "Download fehlgeschlagen: $url"
   fi
   validate_archive "$tmp/fx.tar.xz"
 
   log_step "Entpacke nach ${KH_FX_ARTIFACT_DIR}"
   run tar -xJf "$tmp/fx.tar.xz" -C "$KH_FX_ARTIFACT_DIR"
+  rm -rf "$tmp"
   [[ -f "$KH_FX_ARTIFACT_DIR/run.sh" ]] || die "run.sh fehlt — Artefakt unvollständig."
   run chmod +x "$KH_FX_ARTIFACT_DIR/run.sh"
 

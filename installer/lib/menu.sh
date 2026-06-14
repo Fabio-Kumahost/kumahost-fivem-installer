@@ -45,6 +45,7 @@ do_install() {
   [[ "$with_pma" == "yes" ]] && install_phpmyadmin
   start_and_verify
   show_txadmin_hint
+  [[ "$with_db" == "yes" ]] && show_db_summary
   printf '\n'; log_ok "Installation abgeschlossen — viel Spaß mit deinem KumaHost FiveM Server!"
 }
 
