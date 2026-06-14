@@ -70,7 +70,9 @@ show_txadmin_hint() {
   # (see fivem.service: StandardOutput=append:/var/log/fivem/server.log), so the
   # first-run PIN never appears in `journalctl`. Read it straight from the log.
   while (( elapsed < 20 )); do
-    pin="$(grep -aiE 'pin' "$log" 2>/dev/null | grep -aoE '[0-9]{4,8}' | tail -1)"
+    # || true: under `set -o pipefail` a no-match grep fails the whole pipeline
+    # and would trip the ERR trap — during polling, no match yet is expected.
+    pin="$(grep -aiE 'pin' "$log" 2>/dev/null | grep -aoE '[0-9]{4,8}' | tail -1 || true)"
     [[ -n "$pin" ]] && break
     sleep 2; elapsed=$(( elapsed + 2 ))
   done
