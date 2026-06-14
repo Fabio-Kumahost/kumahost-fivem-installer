@@ -54,7 +54,9 @@ show_versions() {
 choose_artifact_url() {
   local choice="${KH_CHANNEL:-}" build
   if [[ -z "$choice" ]]; then
-    show_versions || true
+    # Informational output must go to stderr — this function's stdout is
+    # captured by url="$(choose_artifact_url)" and must contain only the URL.
+    show_versions >&2 || true
     printf '\n  %s[1]%s Recommended  %s[2]%s Latest  %s[3]%s Benutzerdefiniert\n' \
       "$KH_ACCENT" "$KH_RESET" "$KH_ACCENT" "$KH_RESET" "$KH_ACCENT" "$KH_RESET" >&2
     case "$(ask 'Artefakt-Version wählen' '1')" in
