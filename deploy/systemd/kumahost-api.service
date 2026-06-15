@@ -19,7 +19,9 @@ RestartSec=5
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=full
-ProtectHome=true
+# The FiveM server lives under /home/fivem, so the panel must be able to READ
+# /home (version file, backups list). read-only keeps it from writing there.
+ProtectHome=read-only
 ReadWritePaths=/opt/kumahost/api/data
 # The API shells out to systemctl / the installer via sudo; keep caps minimal.
 

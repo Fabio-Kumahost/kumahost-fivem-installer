@@ -34,6 +34,12 @@ install_service() {
 
   run mkdir -p "$KH_LOG_DIR"
   run chown "$KH_FX_USER:$KH_FX_USER" "$KH_LOG_DIR"
+  run chmod 755 "$KH_LOG_DIR"
+  # Pre-create the log world-readable so the webpanel (user kumahost) can read
+  # it regardless of the service's umask. screen -L appends and keeps the mode.
+  run touch "$KH_SERVER_LOG"
+  run chown "$KH_FX_USER:$KH_FX_USER" "$KH_SERVER_LOG"
+  run chmod 644 "$KH_SERVER_LOG"
   run install -d -o "$KH_FX_USER" -g "$KH_FX_USER" -m 700 "$KH_SCREEN_DIR"
 
   # Flush the screen logfile every second so the txAdmin PIN shows up promptly

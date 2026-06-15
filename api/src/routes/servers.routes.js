@@ -16,6 +16,12 @@ router.use(requireAuth);
 
 const getServer = (id) => db.prepare('SELECT * FROM servers WHERE id = ?').get(id);
 const idParam = z.object({ id: z.coerce.number().int().positive() });
+// Includes `action` so validate() does not strip it from req.params (zod
+// objects drop unknown keys) — and validates the allowed actions in one place.
+const actionParam = z.object({
+  id: z.coerce.number().int().positive(),
+  action: z.enum(['start', 'stop', 'restart']),
+});
 
 const createSchema = z.object({
   name: z.string().min(2).max(48).regex(/^[a-zA-Z0-9_-]+$/, 'Nur a-z, 0-9, _ und -'),
@@ -76,24 +82,9 @@ router.get(
   }),
 );
 
-// POST /api/servers/:id/:action — start | stop | restart.
-router.post(
-  '/:id/:action',
-  validate(idParam, 'params'),
-  asyncHandler(async (req, res) => {
-    const { action } = req.params;
-    if (!['start', 'stop', 'restart'].includes(action)) {
-      throw new ApiError(400, 'Aktion muss start, stop oder restart sein.');
-    }
-    const server = getServer(req.params.id);
-    if (!server) throw new ApiError(404, 'Server nicht gefunden.');
-    const result = await fivem.control(action, server.service_name);
-    audit({ userId: req.user.sub, action: `server.${action}`, target: server.name, ip: req.ip });
-    res.json({ ok: true, ...result });
-  }),
-);
-
 // POST /api/servers/:id/update — update the FiveM artifact.
+// Registered BEFORE /:id/:action so the literal "update" segment is not
+// captured by the generic action route.
 router.post(
   '/:id/update',
   validate(idParam, 'params'),
@@ -103,6 +94,20 @@ router.post(
     const result = await fivem.runInstaller('update');
     audit({ userId: req.user.sub, action: 'server.update', target: server.name, ip: req.ip });
     res.json({ ok: true, output: result.output });
+  }),
+);
+
+// POST /api/servers/:id/:action — start | stop | restart.
+router.post(
+  '/:id/:action',
+  validate(actionParam, 'params'),
+  asyncHandler(async (req, res) => {
+    const { id, action } = req.params;
+    const server = getServer(id);
+    if (!server) throw new ApiError(404, 'Server nicht gefunden.');
+    const result = await fivem.control(action, server.service_name);
+    audit({ userId: req.user.sub, action: `server.${action}`, target: server.name, ip: req.ip });
+    res.json({ ok: true, ...result });
   }),
 );
 
