@@ -52,6 +52,7 @@ if ! touch "$KH_LOG_FILE" 2>/dev/null; then
   export KH_LOG_FILE
 fi
 
+export KH_ROOT
 export KH_TEMPLATE_DIR="$KH_ROOT/installer/templates"
 LIB="$KH_ROOT/installer/lib"
 
@@ -76,6 +77,7 @@ case "${1:-menu}" in
   stop)           require_root; load_config; stop_service ;;
   restart)        require_root; load_config; restart_service ;;
   console)        require_root; load_config; attach_console ;;
+  panel)          require_root; load_config; install_webpanel ;;
   status)         load_config; service_status ;;
   menu|"")        main_menu ;;
   -h|--help|help)
@@ -88,6 +90,7 @@ KumaHost FiveM Installer
   remove               Server entfernen
   start|stop|restart   Service steuern
   console              Mit der Server-Konsole (screen) verbinden
+  panel                KumaHost Webpanel installieren
   status               Service-Status
   menu                 Interaktives Menü (Standard)
 USAGE

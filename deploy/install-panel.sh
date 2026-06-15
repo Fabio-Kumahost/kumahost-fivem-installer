@@ -49,7 +49,7 @@ install_prerequisites() {
   export DEBIAN_FRONTEND=noninteractive
   log_step "Basis-Pakete installieren"
   run apt-get update -y
-  run apt-get install -y --no-install-recommends curl ca-certificates gnupg nginx openssl rsync
+  run apt-get install -y --no-install-recommends curl ca-certificates gnupg nginx openssl rsync sudo
 }
 
 install_nodejs() {

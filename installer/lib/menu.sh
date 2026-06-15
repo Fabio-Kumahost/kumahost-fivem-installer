@@ -68,6 +68,19 @@ do_install() {
   printf '\n'; log_ok "Viel Spaß mit deinem KumaHost FiveM Server!"
 }
 
+# install_webpanel — run the separate KumaHost panel deploy script. The
+# installer already downloaded the full repo to KH_ROOT, so it is available
+# here without a manual git clone.
+install_webpanel() {
+  local script="${KH_ROOT:-}/deploy/install-panel.sh"
+  log_step "KumaHost Webpanel installieren"
+  if [[ ! -f "$script" ]]; then
+    die "Panel-Installer nicht gefunden: ${script:-<unbekannt>}"
+  fi
+  # Run as a child process so its failure/abort does not kill the menu.
+  bash "$script" || log_warn "Webpanel-Installation fehlgeschlagen oder abgebrochen."
+}
+
 # advanced_settings — edit ports / paths / channel and persist them.
 advanced_settings() {
   while true; do
@@ -113,26 +126,28 @@ main_menu() {
     kh_menu_item 1 "FiveM"                       "FXServer + txAdmin"
     kh_menu_item 2 "FiveM + MariaDB"             "inkl. Datenbank"
     kh_menu_item 3 "FiveM + MariaDB + phpMyAdmin" "Komplettpaket"
+    kh_menu_item 4 "Webpanel installieren"       "KumaHost Dashboard"
     kh_menu_group "Verwaltung"
-    kh_menu_item 4 "Server aktualisieren"
-    kh_menu_item 5 "Backup erstellen"
-    kh_menu_item 6 "Backup wiederherstellen"
-    kh_menu_item 7 "Server-Konsole"             "screen anhängen"
+    kh_menu_item 5 "Server aktualisieren"
+    kh_menu_item 6 "Backup erstellen"
+    kh_menu_item 7 "Backup wiederherstellen"
+    kh_menu_item 8 "Server-Konsole"             "screen anhängen"
     kh_menu_group "System"
-    kh_menu_item 8 "Server entfernen"
-    kh_menu_item 9 "Erweiterte Einstellungen"
-    kh_menu_item 0 "Beenden"
+    kh_menu_item 9  "Server entfernen"
+    kh_menu_item 10 "Erweiterte Einstellungen"
+    kh_menu_item 0  "Beenden"
     printf '\n'
     case "$(ask 'Auswahl' '1')" in
       1) do_install no  no  ;;
       2) do_install yes no  ;;
       3) do_install yes yes ;;
-      4) require_root; load_config; update_fivem ;;
-      5) require_root; create_backup ;;
-      6) require_root; restore_backup ;;
-      7) require_root; attach_console ;;
-      8) require_root; remove_server ;;
-      9) advanced_settings ;;
+      4) require_root; load_config; install_webpanel ;;
+      5) require_root; load_config; update_fivem ;;
+      6) require_root; create_backup ;;
+      7) require_root; restore_backup ;;
+      8) require_root; attach_console ;;
+      9) require_root; remove_server ;;
+      10) advanced_settings ;;
       0|q|Q) log_info "Auf Wiedersehen!"; exit 0 ;;
       *) log_warn "Bitte eine gültige Zahl wählen." ;;
     esac
