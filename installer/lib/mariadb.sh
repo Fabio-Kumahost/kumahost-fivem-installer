@@ -25,16 +25,28 @@ install_mariadb() {
   install_packages mariadb-server
   run systemctl enable --now mariadb
 
-  local db_pass
-  db_pass="$(_kh_gen_password)"
+  # Reuse existing passwords on re-runs so credentials stay stable.
+  local db_pass root_pass
+  if [[ -r "$KH_DB_CRED_FILE" ]]; then
+    local DB_HOST DB_NAME DB_USER DB_PASSWORD DB_ROOT_USER DB_ROOT_PASSWORD CONNECTION_STRING
+    # shellcheck disable=SC1090
+    . "$KH_DB_CRED_FILE"
+    db_pass="${DB_PASSWORD:-}"
+    root_pass="${DB_ROOT_PASSWORD:-}"
+  fi
+  [[ -n "${db_pass:-}"   ]] || db_pass="$(_kh_gen_password)"
+  [[ -n "${root_pass:-}" ]] || root_pass="$(_kh_gen_password)"
 
   log_step "Datenbank '${KH_DB_NAME}' und Benutzer '${KH_DB_USER}' anlegen"
-  # Idempotent provisioning via the local root socket.
+  # Idempotent provisioning via the local root socket. The root account keeps
+  # unix_socket auth (so the CLI/installer still log in passwordless) AND gains
+  # a password (so phpMyAdmin, running as www-data, can log in as root too).
   mysql --protocol=socket -u root <<SQL >>"$KH_LOG_FILE" 2>&1 || die "MariaDB-Provisionierung fehlgeschlagen."
 CREATE DATABASE IF NOT EXISTS \`${KH_DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS '${KH_DB_USER}'@'localhost' IDENTIFIED BY '${db_pass}';
 ALTER USER '${KH_DB_USER}'@'localhost' IDENTIFIED BY '${db_pass}';
 GRANT ALL PRIVILEGES ON \`${KH_DB_NAME}\`.* TO '${KH_DB_USER}'@'localhost';
+ALTER USER 'root'@'localhost' IDENTIFIED VIA unix_socket OR mysql_native_password USING PASSWORD('${root_pass}');
 FLUSH PRIVILEGES;
 SQL
 
@@ -50,6 +62,8 @@ DB_HOST=localhost
 DB_NAME=${KH_DB_NAME}
 DB_USER=${KH_DB_USER}
 DB_PASSWORD=${db_pass}
+DB_ROOT_USER=root
+DB_ROOT_PASSWORD=${root_pass}
 # Connection-String für FiveM-Ressourcen (z. B. oxmysql / ghmattimysql):
 CONNECTION_STRING=mysql://${KH_DB_USER}:${db_pass}@localhost/${KH_DB_NAME}?charset=utf8mb4
 CRED
@@ -65,7 +79,7 @@ CRED
 # by install_mariadb; no-op if it is missing.
 show_db_summary() {
   [[ -r "$KH_DB_CRED_FILE" ]] || return 0
-  local DB_HOST DB_NAME DB_USER DB_PASSWORD CONNECTION_STRING
+  local DB_HOST DB_NAME DB_USER DB_PASSWORD DB_ROOT_USER DB_ROOT_PASSWORD CONNECTION_STRING
   # shellcheck disable=SC1090
   . "$KH_DB_CRED_FILE"
   kh_panel_top
@@ -75,6 +89,10 @@ show_db_summary() {
   kh_panel_kv "Datenbank" "$DB_NAME"
   kh_panel_kv "Benutzer" "$DB_USER"
   kh_panel_kv "Passwort" "$DB_PASSWORD"
+  if [[ -n "${DB_ROOT_PASSWORD:-}" ]]; then
+    kh_panel_kv "root-User" "${DB_ROOT_USER:-root}"
+    kh_panel_kv "root-Pass" "$DB_ROOT_PASSWORD"
+  fi
   kh_panel_bottom
   log_detail "Vollständig (inkl. Connection-String): ${KH_DB_CRED_FILE}"
 }
