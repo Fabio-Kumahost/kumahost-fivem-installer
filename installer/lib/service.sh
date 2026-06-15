@@ -36,6 +36,11 @@ install_service() {
   run chown "$KH_FX_USER:$KH_FX_USER" "$KH_LOG_DIR"
   run install -d -o "$KH_FX_USER" -g "$KH_FX_USER" -m 700 "$KH_SCREEN_DIR"
 
+  # Flush the screen logfile every second so the txAdmin PIN shows up promptly
+  # (screen's default flush interval is 10s). $HOME for the service is the base.
+  printf 'logfile flush 1\n' >"${KH_FX_BASE}/.screenrc"
+  run chown "$KH_FX_USER:$KH_FX_USER" "${KH_FX_BASE}/.screenrc"
+
   local screen_bin; screen_bin="$(command -v screen)"
 
   # Substitute placeholders into the live unit file.
