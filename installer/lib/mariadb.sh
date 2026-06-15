@@ -68,12 +68,13 @@ show_db_summary() {
   local DB_HOST DB_NAME DB_USER DB_PASSWORD CONNECTION_STRING
   # shellcheck disable=SC1090
   . "$KH_DB_CRED_FILE"
-  printf '\n%s%s── Datenbank-Zugang ─────────────────────────────%s\n' \
-    "$KH_ACCENT" "$KH_BOLD" "$KH_RESET"
-  log_detail "Host:        ${DB_HOST}"
-  log_detail "Datenbank:   ${DB_NAME}"
-  log_detail "Benutzer:    ${DB_USER}"
-  log_detail "Passwort:    ${DB_PASSWORD}"
-  log_detail "Gespeichert: ${KH_DB_CRED_FILE}"
-  printf '%s─────────────────────────────────────────────────%s\n\n' "$KH_ACCENT" "$KH_RESET"
+  kh_panel_top
+  kh_panel_line "Datenbank-Zugang"
+  kh_panel_divider
+  kh_panel_kv "Host" "$DB_HOST"
+  kh_panel_kv "Datenbank" "$DB_NAME"
+  kh_panel_kv "Benutzer" "$DB_USER"
+  kh_panel_kv "Passwort" "$DB_PASSWORD"
+  kh_panel_bottom
+  log_detail "Vollständig (inkl. Connection-String): ${KH_DB_CRED_FILE}"
 }

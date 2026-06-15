@@ -48,5 +48,6 @@ remove_server() {
   fi
 
   run rm -rf /var/log/fivem
+  rm -f "${KH_CLI_PATH:-/usr/local/bin/kumahost}" 2>/dev/null || true
   log_ok "Deinstallation abgeschlossen"
 }

@@ -11,7 +11,7 @@ KH_FX_CHANGELOG="https://changelogs-live.fivem.net/api/changelog/versions/linux/
 KH_FX_ARTIFACTS="https://runtime.fivem.net/artifacts/fivem/build_proot_linux/master"
 
 # Install layout — overridable via environment before sourcing.
-KH_FX_BASE="${KH_FX_BASE:-/opt/fivem}"          # server data + cfg
+KH_FX_BASE="${KH_FX_BASE:-/home/fivem}"         # server data + cfg
 KH_FX_ARTIFACT_DIR="${KH_FX_ARTIFACT_DIR:-${KH_FX_BASE}/artifact}"
 KH_FX_DATA_DIR="${KH_FX_DATA_DIR:-${KH_FX_BASE}/server-data}"
 KH_FX_USER="${KH_FX_USER:-fivem}"

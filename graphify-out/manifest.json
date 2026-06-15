@@ -1,0 +1,262 @@
+{
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/package.json": {
+    "mtime": 1781114456.1379576,
+    "ast_hash": "a7baf8c646c38d4d64db865ba4ab7d68",
+    "semantic_hash": "a7baf8c646c38d4d64db865ba4ab7d68"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/schema.sql": {
+    "mtime": 1781114112.3088384,
+    "ast_hash": "f3217f26152ceb2c762f3fee80ee22e0",
+    "semantic_hash": "f3217f26152ceb2c762f3fee80ee22e0"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/config.js": {
+    "mtime": 1781114089.9990683,
+    "ast_hash": "7f0ba2598a6dcb49c933b69a602ed776",
+    "semantic_hash": "7f0ba2598a6dcb49c933b69a602ed776"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/db.js": {
+    "mtime": 1781114122.5427763,
+    "ast_hash": "8f65489f29767f3d7d68cf5460dd93b6",
+    "semantic_hash": "8f65489f29767f3d7d68cf5460dd93b6"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/logger.js": {
+    "mtime": 1781114096.4302576,
+    "ast_hash": "f0c8d19c9892408d3168a7a8345bd981",
+    "semantic_hash": "f0c8d19c9892408d3168a7a8345bd981"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/middleware/auth.js": {
+    "mtime": 1781114131.8107479,
+    "ast_hash": "c203dd46376aa4ce8d1cb825a3520f59",
+    "semantic_hash": "c203dd46376aa4ce8d1cb825a3520f59"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/middleware/csrf.js": {
+    "mtime": 1781114156.4530032,
+    "ast_hash": "1bfdfd9f6b9807d01a2bef86b61455e0",
+    "semantic_hash": "1bfdfd9f6b9807d01a2bef86b61455e0"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/middleware/error.js": {
+    "mtime": 1781114162.9987094,
+    "ast_hash": "7c4fd4da48160e784be4bf482d4c7a87",
+    "semantic_hash": "7c4fd4da48160e784be4bf482d4c7a87"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/middleware/rateLimit.js": {
+    "mtime": 1781114139.4306965,
+    "ast_hash": "3ee55ff2628ece9531bf9bffeb774dac",
+    "semantic_hash": "3ee55ff2628ece9531bf9bffeb774dac"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/middleware/validate.js": {
+    "mtime": 1781114145.7997243,
+    "ast_hash": "8b7884c7a7c014fc53ddc93063dcffaf",
+    "semantic_hash": "8b7884c7a7c014fc53ddc93063dcffaf"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/routes/auth.routes.js": {
+    "mtime": 1781114234.302424,
+    "ast_hash": "cd56fefee28a195c615afda0bacb643a",
+    "semantic_hash": "cd56fefee28a195c615afda0bacb643a"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/routes/backups.routes.js": {
+    "mtime": 1781114267.112401,
+    "ast_hash": "0b8c12ae1fa7814afa3ea150b802be44",
+    "semantic_hash": "0b8c12ae1fa7814afa3ea150b802be44"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/routes/servers.routes.js": {
+    "mtime": 1781114257.326259,
+    "ast_hash": "ef75f7fd978b3851b2b15d511bd3dc87",
+    "semantic_hash": "ef75f7fd978b3851b2b15d511bd3dc87"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/routes/system.routes.js": {
+    "mtime": 1781114274.5705664,
+    "ast_hash": "c2cd16708ff21a5562d1e13653025172",
+    "semantic_hash": "c2cd16708ff21a5562d1e13653025172"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/scripts/create-admin.js": {
+    "mtime": 1781114305.8302574,
+    "ast_hash": "7eadb1470fbfa148b22383ac2581510f",
+    "semantic_hash": "7eadb1470fbfa148b22383ac2581510f"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/scripts/init-db.js": {
+    "mtime": 1781114296.0638766,
+    "ast_hash": "becf2f9bcd21108ae1f14c007786e3b4",
+    "semantic_hash": "becf2f9bcd21108ae1f14c007786e3b4"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/server.js": {
+    "mtime": 1781114290.743147,
+    "ast_hash": "b4e0d42d9e8a999af150639386fa21c8",
+    "semantic_hash": "b4e0d42d9e8a999af150639386fa21c8"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/services/backup.service.js": {
+    "mtime": 1781114216.4963396,
+    "ast_hash": "5ce7bac619e0164afb35e9ae97e6d4b2",
+    "semantic_hash": "5ce7bac619e0164afb35e9ae97e6d4b2"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/services/fivem.service.js": {
+    "mtime": 1781114208.40118,
+    "ast_hash": "f2159730aad4972644efc392ddb3266e",
+    "semantic_hash": "f2159730aad4972644efc392ddb3266e"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/src/services/stats.service.js": {
+    "mtime": 1781114182.891508,
+    "ast_hash": "586cd6cd7b6384d9ff32ca7da6e95a64",
+    "semantic_hash": "586cd6cd7b6384d9ff32ca7da6e95a64"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/api/tests/api.test.js": {
+    "mtime": 1781114325.5676336,
+    "ast_hash": "fe0d9dd48e2298006e7d267228a6ec87",
+    "semantic_hash": "fe0d9dd48e2298006e7d267228a6ec87"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/deploy/install-panel.sh": {
+    "mtime": 1781114673.708109,
+    "ast_hash": "824236a0eaf4b3934e66e0d7db51847b",
+    "semantic_hash": "824236a0eaf4b3934e66e0d7db51847b"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/install.sh": {
+    "mtime": 1781113985.222704,
+    "ast_hash": "6f2248c50fb847c31b7d24a65df8d3eb",
+    "semantic_hash": "6f2248c50fb847c31b7d24a65df8d3eb"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/backup.sh": {
+    "mtime": 1781113896.3143902,
+    "ast_hash": "3857b37673f5f2ca878fa01b09e7bdd2",
+    "semantic_hash": "3857b37673f5f2ca878fa01b09e7bdd2"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/checks.sh": {
+    "mtime": 1781113727.9697735,
+    "ast_hash": "a8863757e8bcad1c16077ddd58ddcc65",
+    "semantic_hash": "a8863757e8bcad1c16077ddd58ddcc65"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/common.sh": {
+    "mtime": 1781113707.3253157,
+    "ast_hash": "ed5ae0fdf4e135467acb620b2c8b9445",
+    "semantic_hash": "ed5ae0fdf4e135467acb620b2c8b9445"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/deps.sh": {
+    "mtime": 1781113736.7056134,
+    "ast_hash": "69bc6f8b16ab4445eff4130ae8943406",
+    "semantic_hash": "69bc6f8b16ab4445eff4130ae8943406"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/firewall.sh": {
+    "mtime": 1781113748.1357505,
+    "ast_hash": "7f443a5ccbb24b001d14046cc02b06e2",
+    "semantic_hash": "7f443a5ccbb24b001d14046cc02b06e2"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/fivem.sh": {
+    "mtime": 1781113787.7091284,
+    "ast_hash": "c9d6850879bc74518708e944ac1af12e",
+    "semantic_hash": "c9d6850879bc74518708e944ac1af12e"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/mariadb.sh": {
+    "mtime": 1781202531.2711632,
+    "ast_hash": "52735b89483e00defd25e6a1169ee7ed",
+    "semantic_hash": "52735b89483e00defd25e6a1169ee7ed"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/menu.sh": {
+    "mtime": 1781113956.626359,
+    "ast_hash": "faf4bf211af5ff508c9c010c4791857d",
+    "semantic_hash": "faf4bf211af5ff508c9c010c4791857d"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/phpmyadmin.sh": {
+    "mtime": 1781113872.8910754,
+    "ast_hash": "4fe92956d43aac7db2bbd554c6be826b",
+    "semantic_hash": "4fe92956d43aac7db2bbd554c6be826b"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/service.sh": {
+    "mtime": 1781113824.0000417,
+    "ast_hash": "93a8f3a8ce61a7eb1d964f541808f653",
+    "semantic_hash": "93a8f3a8ce61a7eb1d964f541808f653"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/txadmin.sh": {
+    "mtime": 1781113846.7744355,
+    "ast_hash": "906da69ba8d925586090a0ba1752b77f",
+    "semantic_hash": "906da69ba8d925586090a0ba1752b77f"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/uninstall.sh": {
+    "mtime": 1781113928.4769716,
+    "ast_hash": "a57e1c650db474255fb645dfebfa1612",
+    "semantic_hash": "a57e1c650db474255fb645dfebfa1612"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/installer/lib/update.sh": {
+    "mtime": 1781113914.6419132,
+    "ast_hash": "c3910a246caecb2ed3d6cc9dd76a93b2",
+    "semantic_hash": "c3910a246caecb2ed3d6cc9dd76a93b2"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/uninstall.sh": {
+    "mtime": 1781114005.999206,
+    "ast_hash": "825237a890ae1abe28d9afc6a151ace4",
+    "semantic_hash": "825237a890ae1abe28d9afc6a151ace4"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/update.sh": {
+    "mtime": 1781113999.2683034,
+    "ast_hash": "e600faec28b50051c543cb3953a3fed0",
+    "semantic_hash": "e600faec28b50051c543cb3953a3fed0"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/webpanel/js/api.js": {
+    "mtime": 1781114526.353442,
+    "ast_hash": "42cae2c24c4fc15ce021435c809c9b00",
+    "semantic_hash": "42cae2c24c4fc15ce021435c809c9b00"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/webpanel/js/app.js": {
+    "mtime": 1781114552.118656,
+    "ast_hash": "a4abd918fbea5cb476f19f7177c54a3c",
+    "semantic_hash": "a4abd918fbea5cb476f19f7177c54a3c"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/webpanel/js/dashboard.js": {
+    "mtime": 1781114601.7322762,
+    "ast_hash": "ee8dc0017c2ad330523f146eeded8aa0",
+    "semantic_hash": "ee8dc0017c2ad330523f146eeded8aa0"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/webpanel/js/ui.js": {
+    "mtime": 1781114536.307506,
+    "ast_hash": "2c4f67ee31a4cb67bf4058b19272d8a3",
+    "semantic_hash": "2c4f67ee31a4cb67bf4058b19272d8a3"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/CHANGELOG.md": {
+    "mtime": 1781115516.1856833,
+    "ast_hash": "11572f9e6ebc04faf63cfa55a62363bb",
+    "semantic_hash": "11572f9e6ebc04faf63cfa55a62363bb"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/README.md": {
+    "mtime": 1781121880.4238698,
+    "ast_hash": "af94603c7c073ebc86287f892fe09b05",
+    "semantic_hash": "af94603c7c073ebc86287f892fe09b05"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/docs/API.md": {
+    "mtime": 1781115537.6378407,
+    "ast_hash": "80e20993bf54b5fa7414015e90fb0812",
+    "semantic_hash": "80e20993bf54b5fa7414015e90fb0812"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/docs/INSTALL.md": {
+    "mtime": 1781115554.4705849,
+    "ast_hash": "64721ff2a745be0fdf0d6fc6dc0e64cf",
+    "semantic_hash": "64721ff2a745be0fdf0d6fc6dc0e64cf"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/docs/TROUBLESHOOTING.md": {
+    "mtime": 1781115578.1275568,
+    "ast_hash": "5bf9ca0d6c7d9412aa1857e482c49dfc",
+    "semantic_hash": "5bf9ca0d6c7d9412aa1857e482c49dfc"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/docs/UPDATE.md": {
+    "mtime": 1781115564.6319034,
+    "ast_hash": "0d3f623495fff436f7b8864b4e0eea40",
+    "semantic_hash": "0d3f623495fff436f7b8864b4e0eea40"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/webpanel/dashboard.html": {
+    "mtime": 1781114575.8173528,
+    "ast_hash": "eade2c0f578c60dae96c26983d3632e2",
+    "semantic_hash": "eade2c0f578c60dae96c26983d3632e2"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/webpanel/index.html": {
+    "mtime": 1781114545.8211722,
+    "ast_hash": "0c27bf68b9b7f46a1b5f89a4ad7acfcf",
+    "semantic_hash": "0c27bf68b9b7f46a1b5f89a4ad7acfcf"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/docs/assets/dashboard.png": {
+    "mtime": 1781121826.8560016,
+    "ast_hash": "4dba838e48da3bce6a0f5ba19cee7be4",
+    "semantic_hash": "4dba838e48da3bce6a0f5ba19cee7be4"
+  },
+  "/Users/fabioagostinho/Public/FIVEM-Installer/kumahost-fivem-installer/docs/assets/login.png": {
+    "mtime": 1781121767.4508448,
+    "ast_hash": "4301ecfe2b48703c79e656b2492005ca",
+    "semantic_hash": "4301ecfe2b48703c79e656b2492005ca"
+  }
+}

@@ -88,7 +88,10 @@ preflight() {
   detect_os
   check_arch
   check_memory
-  check_disk "/" 5
+  # Check the filesystem that will actually hold the install (base dir parent).
+  local disk_path; disk_path="$(dirname "${KH_FX_BASE:-/home/fivem}")"
+  [[ -d "$disk_path" ]] || disk_path="/"
+  check_disk "$disk_path" 5
   check_internet
   log_ok "Systemprüfung abgeschlossen"
 }

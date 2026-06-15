@@ -1,93 +1,58 @@
 #!/usr/bin/env bash
 # =============================================================================
 # KumaHost FiveM Installer — txadmin.sh
-# TxAdmin is shipped inside the FXServer artifact; this module prepares the
-# server-data directory and a starter server.cfg, then surfaces the setup PIN.
+# TxAdmin ships inside the FXServer artifact and manages the server itself
+# (resources, server.cfg, license key) via its web panel. This module only
+# prepares an empty, correctly-owned server-data directory and surfaces the
+# first-run setup PIN — everything else is done in the txAdmin web UI.
 # =============================================================================
 [[ -n "${_KH_TXADMIN_SOURCED:-}" ]] && return 0
 _KH_TXADMIN_SOURCED=1
 
-KH_SERVER_DATA_REPO="https://github.com/citizenfx/cfx-server-data.git"
 KH_FX_GAME_PORT="${KH_FX_GAME_PORT:-30120}"
 
-# prepare_server_data — populate server-data with the official resource base.
+# prepare_server_data — create the (initially empty) data dir txAdmin deploys
+# into. We deliberately do NOT clone cfx-server-data or write a server.cfg:
+# txAdmin's first-run recipe handles all of that from the web panel.
 prepare_server_data() {
-  log_step "Server-Daten vorbereiten"
-  if [[ -d "$KH_FX_DATA_DIR/resources" ]]; then
-    log_detail "server-data bereits vorhanden — überspringe Klonen."
-  else
-    run git clone --depth 1 "$KH_SERVER_DATA_REPO" "$KH_FX_DATA_DIR"
-    log_ok "cfx-server-data nach ${KH_FX_DATA_DIR} geklont"
-  fi
+  log_step "Server-Datenverzeichnis vorbereiten"
+  run mkdir -p "$KH_FX_DATA_DIR"
+  run chown -R "$KH_FX_USER:$KH_FX_USER" "$KH_FX_DATA_DIR"
+  log_ok "Bereit: ${KH_FX_DATA_DIR}"
+  log_detail "Ressourcen, server.cfg und Lizenz-Key richtest du im txAdmin-Webpanel ein."
 }
 
-# generate_server_cfg — write a sane starter config if none exists.
-generate_server_cfg() {
-  local cfg="$KH_FX_DATA_DIR/server.cfg"
-  if [[ -f "$cfg" ]]; then
-    log_detail "server.cfg existiert bereits — bleibt unverändert."
-    return 0
-  fi
-  local license_key
-  license_key="${KH_LICENSE_KEY:-$(ask 'FiveM License-Key (cfx.re/console, leer = später) ' '')}"
-  cat >"$cfg" <<CFG
-## KumaHost FiveM Installer — starter server.cfg
-## TxAdmin verwaltet die meisten Einstellungen über das Web-Panel.
-
-endpoint_add_tcp "0.0.0.0:${KH_FX_GAME_PORT}"
-endpoint_add_udp "0.0.0.0:${KH_FX_GAME_PORT}"
-
-# Standard-Ressourcen
-ensure mapmanager
-ensure chat
-ensure spawnmanager
-ensure sessionmanager
-ensure basic-gamemode
-ensure hardcap
-
-set sv_hostname "KumaHost FiveM Server"
-sets sv_projectName "KumaHost"
-sets sv_projectDesc "Powered by KumaHost — Premium Hosting"
-set sv_maxclients 48
-set onesync on
-
-sv_licenseKey ${license_key:-changeme}
-CFG
-  run chown "$KH_FX_USER:$KH_FX_USER" "$cfg"
-  log_ok "Starter-server.cfg erzeugt: ${cfg}"
-  [[ -z "$license_key" ]] && log_warn "Kein License-Key gesetzt — vor dem Live-Betrieb in server.cfg eintragen (cfx.re/console)."
+# setup_txadmin — full TxAdmin preparation step (data dir only).
+setup_txadmin() {
+  prepare_server_data
 }
 
 # show_txadmin_hint — print first-run TxAdmin access details and the setup PIN.
 show_txadmin_hint() {
   local ip log="/var/log/fivem/server.log" pin elapsed=0
   ip="$(curl -fsSL --max-time 5 https://api.ipify.org 2>/dev/null || echo 'SERVER-IP')"
-  printf '\n%s%s── TxAdmin Setup ────────────────────────────────%s\n' \
-    "$KH_ACCENT" "$KH_BOLD" "$KH_RESET"
-  log_detail "Web-Oberfläche:  http://${ip}:${KH_TXADMIN_PORT}"
 
-  # The service writes FXServer/TxAdmin output to the log file, NOT the journal
-  # (see fivem.service: StandardOutput=append:/var/log/fivem/server.log), so the
-  # first-run PIN never appears in `journalctl`. Read it straight from the log.
-  while (( elapsed < 20 )); do
-    # || true: under `set -o pipefail` a no-match grep fails the whole pipeline
-    # and would trip the ERR trap — during polling, no match yet is expected.
+  # The service writes FXServer/TxAdmin output to the log file via screen -L,
+  # NOT the journal, so the first-run PIN never appears in `journalctl`.
+  # || true: under `set -o pipefail` a no-match grep would trip the ERR trap.
+  while (( elapsed < 25 )); do
     pin="$(grep -aiE 'pin' "$log" 2>/dev/null | grep -aoE '[0-9]{4,8}' | tail -1 || true)"
     [[ -n "$pin" ]] && break
     sleep 2; elapsed=$(( elapsed + 2 ))
   done
-  if [[ -n "$pin" ]]; then
-    log_ok "Einrichtungs-PIN: ${pin}  (im Web-Panel eingeben)"
-  else
-    log_detail "PIN noch nicht im Log — beim ersten Start anzeigen mit:"
-    log_detail "  tail -f /var/log/fivem/server.log    (Zeile mit „PIN“)"
-  fi
-  printf '%s─────────────────────────────────────────────────%s\n\n' "$KH_ACCENT" "$KH_RESET"
-}
 
-# setup_txadmin — full TxAdmin preparation step.
-setup_txadmin() {
-  prepare_server_data
-  generate_server_cfg
-  run chown -R "$KH_FX_USER:$KH_FX_USER" "$KH_FX_DATA_DIR"
+  kh_panel_top
+  kh_panel_line "txAdmin — Ersteinrichtung"
+  kh_panel_divider
+  kh_panel_kv "Webpanel" "http://${ip}:${KH_TXADMIN_PORT}"
+  if [[ -n "$pin" ]]; then
+    kh_panel_kv "Setup-PIN" "$pin"
+  else
+    kh_panel_kv "Setup-PIN" "siehe Log (s. u.)"
+  fi
+  kh_panel_kv "Konsole" "kumahost console"
+  kh_panel_bottom
+  if [[ -z "$pin" ]]; then
+    log_detail "PIN noch nicht im Log — anzeigen mit: grep -i pin ${log}"
+  fi
 }

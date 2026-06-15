@@ -72,10 +72,11 @@ case "${1:-menu}" in
   backup)         require_root; load_config; create_backup ;;
   restore)        require_root; load_config; restore_backup "${2:-}" ;;
   remove)         require_root; load_config; remove_server ;;
-  start)          require_root; start_service ;;
-  stop)           require_root; stop_service ;;
-  restart)        require_root; restart_service ;;
-  status)         service_status ;;
+  start)          require_root; load_config; start_service ;;
+  stop)           require_root; load_config; stop_service ;;
+  restart)        require_root; load_config; restart_service ;;
+  console)        require_root; load_config; attach_console ;;
+  status)         load_config; service_status ;;
   menu|"")        main_menu ;;
   -h|--help|help)
     cat <<USAGE
@@ -86,6 +87,7 @@ KumaHost FiveM Installer
   restore [archiv]     Backup wiederherstellen
   remove               Server entfernen
   start|stop|restart   Service steuern
+  console              Mit der Server-Konsole (screen) verbinden
   status               Service-Status
   menu                 Interaktives Menü (Standard)
 USAGE

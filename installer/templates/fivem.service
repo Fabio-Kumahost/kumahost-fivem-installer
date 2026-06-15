@@ -1,7 +1,7 @@
 [Unit]
-# KumaHost FiveM Installer — systemd unit for the FXServer / TxAdmin process.
+# KumaHost FiveM Installer — systemd unit for FXServer / TxAdmin (screen).
 # Placeholders (__KH_*__) are substituted by installer/lib/service.sh.
-Description=KumaHost FiveM Server (FXServer + TxAdmin)
+Description=KumaHost FiveM Server (FXServer + TxAdmin, screen)
 After=network-online.target
 Wants=network-online.target
 
@@ -10,25 +10,25 @@ Type=simple
 User=__KH_FX_USER__
 Group=__KH_FX_USER__
 WorkingDirectory=__KH_FX_DATA_DIR__
-# run.sh launches TxAdmin, which in turn supervises the game server.
-ExecStart=__KH_FX_ARTIFACT_DIR__/run.sh +set serverProfile default +set txAdminPort __KH_TXADMIN_PORT__
+# Fixed socket dir so `kumahost console` can reliably attach to the session.
+Environment=SCREENDIR=__KH_SCREEN_DIR__
+# Ensure the screen socket dir exists before launch.
+ExecStartPre=/usr/bin/install -d -o __KH_FX_USER__ -g __KH_FX_USER__ -m 700 __KH_SCREEN_DIR__
+# screen -DmS keeps screen in the foreground (so systemd supervises it) while
+# creating a detached, attachable session. -L/-Logfile mirror all server
+# output (incl. the txAdmin setup PIN) into the log file.
+ExecStart=__KH_SCREEN_BIN__ -L -Logfile __KH_SERVER_LOG__ -DmS __KH_SCREEN_NAME__ __KH_FX_ARTIFACT_DIR__/run.sh +set serverProfile default +set txAdminPort __KH_TXADMIN_PORT__
+ExecStop=__KH_SCREEN_BIN__ -S __KH_SCREEN_NAME__ -X quit
 Restart=on-failure
 RestartSec=5
-# Give the server time to shut down cleanly on stop/restart.
-KillSignal=SIGINT
 TimeoutStopSec=30
 
-# --- Hardening ---------------------------------------------------------------
+# --- Hardening (kept light so screen + /home base keep working) --------------
 NoNewPrivileges=true
-PrivateTmp=true
 ProtectSystem=full
-ProtectHome=true
-ReadWritePaths=__KH_FX_BASE__
-
-# --- Logging -----------------------------------------------------------------
-StandardOutput=append:/var/log/fivem/server.log
-StandardError=append:/var/log/fivem/server.log
-SyslogIdentifier=fivem
+# base lives under /home, so /home must stay accessible.
+ProtectHome=false
+ReadWritePaths=__KH_FX_BASE__ /var/log/fivem
 
 [Install]
 WantedBy=multi-user.target

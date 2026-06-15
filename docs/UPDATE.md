@@ -59,4 +59,4 @@ sudo bash install.sh restore                # interactive restore
 sudo bash install.sh restore /path/to.tar.gz
 ```
 
-Backups live in `/opt/fivem/backups/` as `fivem-backup-YYYYMMDD-HHMMSS.tar.gz`.
+Backups live in `/home/fivem/backups/` as `fivem-backup-YYYYMMDD-HHMMSS.tar.gz`.

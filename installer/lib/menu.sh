@@ -32,6 +32,23 @@ CONF
   log_ok "Einstellungen gespeichert: ${KH_CONF_FILE}"
 }
 
+# show_install_summary WITH_DB WITH_PMA — final overview panel after install.
+show_install_summary() {
+  local with_db="$1" with_pma="$2" ip
+  ip="$(curl -fsSL --max-time 5 https://api.ipify.org 2>/dev/null || echo 'SERVER-IP')"
+  kh_panel_top
+  kh_panel_line "Installation abgeschlossen"
+  kh_panel_divider
+  kh_panel_kv "Verzeichnis" "$KH_FX_BASE"
+  kh_panel_kv "Benutzer" "$KH_FX_USER"
+  kh_panel_kv "Game-Port" "${KH_FX_GAME_PORT} (TCP/UDP)"
+  kh_panel_kv "txAdmin" "http://${ip}:${KH_TXADMIN_PORT}"
+  [[ "$with_pma" == "yes" ]] && kh_panel_kv "phpMyAdmin" "http://${ip}:${KH_PMA_PORT}"
+  kh_panel_kv "Konsole" "kumahost console"
+  kh_panel_kv "Start" "via systemd + screen"
+  kh_panel_bottom
+}
+
 # do_install WITH_DB WITH_PMA — orchestrate a full installation.
 do_install() {
   local with_db="$1" with_pma="$2"
@@ -44,28 +61,37 @@ do_install() {
   install_service
   [[ "$with_pma" == "yes" ]] && install_phpmyadmin
   start_and_verify
+  printf '\n'
   show_txadmin_hint
   [[ "$with_db" == "yes" ]] && show_db_summary
-  printf '\n'; log_ok "Installation abgeschlossen — viel Spaß mit deinem KumaHost FiveM Server!"
+  show_install_summary "$with_db" "$with_pma"
+  printf '\n'; log_ok "Viel Spaß mit deinem KumaHost FiveM Server!"
 }
 
 # advanced_settings — edit ports / paths / channel and persist them.
 advanced_settings() {
   while true; do
-    printf '\n%s%s── Erweiterte Einstellungen ──%s\n' "$KH_ACCENT" "$KH_BOLD" "$KH_RESET"
-    log_detail "Install-Verzeichnis : ${KH_FX_BASE}"
-    log_detail "Service-Benutzer    : ${KH_FX_USER}"
-    log_detail "Game-Port           : ${KH_FX_GAME_PORT} (TCP/UDP)"
-    log_detail "TxAdmin-Port        : ${KH_TXADMIN_PORT}"
-    log_detail "phpMyAdmin-Port     : ${KH_PMA_PORT}"
-    log_detail "Artefakt-Channel    : ${KH_CHANNEL:-recommended}"
-    printf '  %s[1]%s Game-Port  %s[2]%s TxAdmin-Port  %s[3]%s Channel  %s[4]%s Speichern  %s[0]%s Zurück\n' \
-      "$KH_ACCENT" "$KH_RESET" "$KH_ACCENT" "$KH_RESET" "$KH_ACCENT" "$KH_RESET" \
-      "$KH_ACCENT" "$KH_RESET" "$KH_ACCENT" "$KH_RESET"
+    kh_banner
+    kh_panel_top
+    kh_panel_line "Erweiterte Einstellungen"
+    kh_panel_divider
+    kh_panel_kv "Verzeichnis" "$KH_FX_BASE"
+    kh_panel_kv "Benutzer" "$KH_FX_USER"
+    kh_panel_kv "Game-Port" "${KH_FX_GAME_PORT}"
+    kh_panel_kv "txAdmin" "${KH_TXADMIN_PORT}"
+    kh_panel_kv "phpMyAdmin" "${KH_PMA_PORT}"
+    kh_panel_kv "Channel" "${KH_CHANNEL:-recommended}"
+    kh_panel_bottom
+    kh_menu_item 1 "Game-Port ändern"
+    kh_menu_item 2 "txAdmin-Port ändern"
+    kh_menu_item 3 "Artefakt-Channel ändern"
+    kh_menu_item 4 "Einstellungen speichern"
+    kh_menu_item 0 "Zurück"
+    printf '\n'
     case "$(ask 'Auswahl' '0')" in
       1) local p; p="$(ask 'Neuer Game-Port' "$KH_FX_GAME_PORT")"
          valid_port "$p" && KH_FX_GAME_PORT="$p" || log_warn "Ungültiger Port." ;;
-      2) local p; p="$(ask 'Neuer TxAdmin-Port' "$KH_TXADMIN_PORT")"
+      2) local p; p="$(ask 'Neuer txAdmin-Port' "$KH_TXADMIN_PORT")"
          valid_port "$p" && KH_TXADMIN_PORT="$p" || log_warn "Ungültiger Port." ;;
       3) case "$(ask 'Channel (recommended/latest)' "${KH_CHANNEL:-recommended}")" in
            latest) KH_CHANNEL=latest ;; *) KH_CHANNEL=recommended ;;
@@ -74,6 +100,7 @@ advanced_settings() {
       0|"") return 0 ;;
       *) log_warn "Unbekannte Auswahl." ;;
     esac
+    printf '\n'; read -r -p "$(printf '  %sEnter zum Fortfahren …%s' "$KH_DIM" "$KH_RESET")" _ || true
   done
 }
 
@@ -82,17 +109,20 @@ main_menu() {
   load_config
   while true; do
     kh_banner
-    cat <<MENU
-  ${KH_ACCENT}[1]${KH_RESET} FiveM installieren
-  ${KH_ACCENT}[2]${KH_RESET} FiveM + MariaDB installieren
-  ${KH_ACCENT}[3]${KH_RESET} FiveM + MariaDB + phpMyAdmin installieren
-  ${KH_ACCENT}[4]${KH_RESET} Server aktualisieren
-  ${KH_ACCENT}[5]${KH_RESET} Backup erstellen
-  ${KH_ACCENT}[6]${KH_RESET} Backup wiederherstellen
-  ${KH_ACCENT}[7]${KH_RESET} Server entfernen
-  ${KH_ACCENT}[8]${KH_RESET} Erweiterte Einstellungen
-  ${KH_ACCENT}[9]${KH_RESET} Beenden
-MENU
+    kh_menu_group "Installation"
+    kh_menu_item 1 "FiveM"                       "FXServer + txAdmin"
+    kh_menu_item 2 "FiveM + MariaDB"             "inkl. Datenbank"
+    kh_menu_item 3 "FiveM + MariaDB + phpMyAdmin" "Komplettpaket"
+    kh_menu_group "Verwaltung"
+    kh_menu_item 4 "Server aktualisieren"
+    kh_menu_item 5 "Backup erstellen"
+    kh_menu_item 6 "Backup wiederherstellen"
+    kh_menu_item 7 "Server-Konsole"             "screen anhängen"
+    kh_menu_group "System"
+    kh_menu_item 8 "Server entfernen"
+    kh_menu_item 9 "Erweiterte Einstellungen"
+    kh_menu_item 0 "Beenden"
+    printf '\n'
     case "$(ask 'Auswahl' '1')" in
       1) do_install no  no  ;;
       2) do_install yes no  ;;
@@ -100,11 +130,12 @@ MENU
       4) require_root; load_config; update_fivem ;;
       5) require_root; create_backup ;;
       6) require_root; restore_backup ;;
-      7) require_root; remove_server ;;
-      8) advanced_settings ;;
-      9|q|Q) log_info "Auf Wiedersehen!"; exit 0 ;;
-      *) log_warn "Bitte 1–9 wählen." ;;
+      7) require_root; attach_console ;;
+      8) require_root; remove_server ;;
+      9) advanced_settings ;;
+      0|q|Q) log_info "Auf Wiedersehen!"; exit 0 ;;
+      *) log_warn "Bitte eine gültige Zahl wählen." ;;
     esac
-    printf '\n'; read -r -p "$(printf '%sEnter zum Fortfahren …%s' "$KH_DIM" "$KH_RESET")" _ || true
+    printf '\n'; read -r -p "$(printf '  %sEnter zum Fortfahren …%s' "$KH_DIM" "$KH_RESET")" _ || true
   done
 }

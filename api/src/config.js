@@ -43,7 +43,7 @@ const config = {
 
   fivem: {
     service: process.env.FIVEM_SERVICE ?? 'fivem',
-    base: process.env.FIVEM_BASE ?? '/opt/fivem',
+    base: process.env.FIVEM_BASE ?? '/home/fivem',
     logFile: process.env.FIVEM_LOG ?? '/var/log/fivem/server.log',
     txadminPort: int(process.env.TXADMIN_PORT, 40120),
   },
